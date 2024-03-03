@@ -11,9 +11,11 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
 
 class MyAdapter( private val mData: List<Any>) : RecyclerView.Adapter<ViewHolder>() {
+    private val HEAD_VIEW_TYPE=0
+    private val BODY_VIEW_TYPE=1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return if (viewType==0){
+        return if (viewType==HEAD_VIEW_TYPE){
             HeadViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_head, parent, false))
         }else {
             BodyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false))
@@ -21,7 +23,7 @@ class MyAdapter( private val mData: List<Any>) : RecyclerView.Adapter<ViewHolder
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val data=mData.get(position)
+        val data= mData[position]
         if (holder is HeadViewHolder){
             holder.bind(data as String)
         }else if (holder is BodyViewHolder){
@@ -29,46 +31,32 @@ class MyAdapter( private val mData: List<Any>) : RecyclerView.Adapter<ViewHolder
         }
     }
 
-
     override fun getItemViewType(position: Int): Int {
-        return if(mData.get(position) is HistoryBodyData) 1 else 0
+        return if(mData[position] is HistoryBodyData) BODY_VIEW_TYPE else HEAD_VIEW_TYPE
     }
-
 
     override fun getItemCount(): Int {
         return mData.size
     }
 
-    inner class BodyViewHolder internal constructor(itemView: View) : ViewHolder(itemView) {
-        private val textViewTitle: TextView
-        private val textViewBody:TextView
-        private val textViewSum:TextView
-        private val imageViewStatus:ImageView
-        private val imageViewService:ImageView
+    inner class BodyViewHolder internal constructor(itemView: View) : BaseViewHolder<HistoryBodyData>(itemView) {
+        private val textViewTitle: TextView = findViewById<TextView>(R.id.textViewTitle)
+        private val textViewBody:TextView = findViewById<TextView>(R.id.textViewBody)
+        private val textViewSum:TextView = findViewById<TextView>(R.id.textViewSum)
+        private val imageViewStatus:ImageView =findViewById(R.id.imageViewStatus)
+        private val imageViewService:ImageView = findViewById(R.id.imageViewService)
 
-        init {
-            textViewTitle = itemView.findViewById<TextView>(R.id.textViewTitle)
-            textViewBody = itemView.findViewById<TextView>(R.id.textViewBody)
-            textViewSum = itemView.findViewById<TextView>(R.id.textViewSum)
-            imageViewService=itemView.findViewById(R.id.imageViewService)
-            imageViewStatus=itemView.findViewById(R.id.imageViewStatus)
-        }
-
-        fun bind(item: HistoryBodyData) {
+        override fun bind(item: HistoryBodyData) {
             textViewTitle.text=item.title
             textViewBody.text=item.body
             textViewSum.text=item.endText
         }
     }
 
-    inner class HeadViewHolder internal constructor(itemView: View) : ViewHolder(itemView) {
-        private val textViewTitle: TextView
+    inner class HeadViewHolder internal constructor(itemView: View) : BaseViewHolder<String>(itemView) {
+        private val textViewTitle: TextView = findViewById(R.id.textView)
 
-        init {
-            textViewTitle = itemView.findViewById(R.id.textView)
-        }
-
-        fun bind(item:String){
+        override fun bind(item:String){
             textViewTitle.text=item
         }
 
