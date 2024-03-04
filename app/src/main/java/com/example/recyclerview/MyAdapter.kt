@@ -3,6 +3,7 @@ package com.example.recyclerview
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -10,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
 
-class MyAdapter( private val mData: List<Any>) : RecyclerView.Adapter<ViewHolder>() {
+class MyAdapter(private val mData: List<Any>, private val onClickListener: OnClickListener) : RecyclerView.Adapter<ViewHolder>() {
     private val HEAD_VIEW_TYPE=0
     private val BODY_VIEW_TYPE=1
 
@@ -29,6 +30,7 @@ class MyAdapter( private val mData: List<Any>) : RecyclerView.Adapter<ViewHolder
         }else if (holder is BodyViewHolder){
             holder.bind(data as HistoryBodyData)
         }
+        holder.itemView.setOnClickListener(onClickListener)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -50,6 +52,20 @@ class MyAdapter( private val mData: List<Any>) : RecyclerView.Adapter<ViewHolder
             textViewTitle.text=item.title
             textViewBody.text=item.body
             textViewSum.text=item.endText
+            imageViewService.setImageResource(item.icon)
+            when(item.status){
+              HistoryStatuses.IN_PROGRESS->{
+                  imageViewStatus.setImageResource(R.drawable.ic_status_proccess)
+              }
+              HistoryStatuses.SUCCES->{
+                  imageViewStatus.setImageResource(R.drawable.ic_status_done)
+              }
+              HistoryStatuses.REJECT->{
+                  imageViewStatus.setImageResource(R.drawable.ic_status_rejected)
+              }
+              else->{}
+            }
+
         }
     }
 
