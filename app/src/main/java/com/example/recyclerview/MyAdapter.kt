@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
 
-class MyAdapter(private val mData: List<Any>, private val onClickListener: OnClickListener) : RecyclerView.Adapter<ViewHolder>() {
+class MyAdapter(private val mData: List<Any>, private val onClickListener: OnClickListener, val onLongClickListener:View.OnLongClickListener) : RecyclerView.Adapter<ViewHolder>() {
     private val HEAD_VIEW_TYPE=0
     private val BODY_VIEW_TYPE=1
 
@@ -29,8 +29,10 @@ class MyAdapter(private val mData: List<Any>, private val onClickListener: OnCli
             holder.bind(data as String)
         }else if (holder is BodyViewHolder){
             holder.bind(data as HistoryBodyData)
+            holder.itemView.setOnClickListener(onClickListener)
+            holder.itemView.setOnLongClickListener(onLongClickListener)
         }
-        holder.itemView.setOnClickListener(onClickListener)
+
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -65,7 +67,7 @@ class MyAdapter(private val mData: List<Any>, private val onClickListener: OnCli
               }
               else->{}
             }
-
+            itemView.tag = item
         }
     }
 
@@ -74,6 +76,7 @@ class MyAdapter(private val mData: List<Any>, private val onClickListener: OnCli
 
         override fun bind(item:String){
             textViewTitle.text=item
+
         }
 
     }

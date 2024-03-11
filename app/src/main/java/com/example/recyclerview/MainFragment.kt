@@ -7,11 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class MainFragment : Fragment(), View.OnClickListener {
-    private lateinit var recyclerView: RecyclerView
+class MainFragment : Fragment(), View.OnClickListener,View.OnLongClickListener {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -26,9 +26,9 @@ class MainFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+        val recyclerView:RecyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val adapter:MyAdapter = MyAdapter(getHistory(),this)
+        val adapter:MyAdapter = MyAdapter(getHistory(),this,this)
         recyclerView.adapter = adapter
     }
 
@@ -42,8 +42,23 @@ class MainFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        context?.let {
-            Toast.makeText(it,"Item Clicked", Toast.LENGTH_SHORT).show()
+        v?.let {
+            val data= it.tag as HistoryBodyData
+            val transaction:FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.container,DetailFragment.newInstance(data))
+            transaction.commit()
         }
+    }
+
+    override fun onLongClick(itemView: View?): Boolean {
+        itemView?.let {
+            val data:HistoryBodyData = it.tag as HistoryBodyData
+            context?.let {
+                Toast.makeText(it,data.title+" "+data.body, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+      return false
     }
 }
