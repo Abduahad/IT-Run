@@ -1,26 +1,24 @@
-package com.example.recyclerview
+package com.example.recyclerview.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-
-
+import androidx.fragment.app.Fragment
+import com.example.recyclerview.model.HistoryBodyData
+import com.example.recyclerview.model.HistoryStatuses
+import com.example.recyclerview.R
 private const val HISTORY_DATA = "HISTORY_DATA"
-
-
-
 class DetailFragment : Fragment() {
     private var data: HistoryBodyData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            data = it.getSerializable(HISTORY_DATA,HistoryBodyData::class.java)
+            data = it.getSerializable(HISTORY_DATA, HistoryBodyData::class.java)
         }
     }
 
@@ -41,9 +39,10 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun getItemView():View{ return  LayoutInflater.from(requireContext()).inflate(R.layout.list_item, null, false) }
+    private fun getItemView(): View { return  LayoutInflater.from(requireContext())
+        .inflate(R.layout.list_item, null, false) }
 
-    private fun bindItem(itemView:View, data: HistoryBodyData){
+    private fun bindItem(itemView: View, data: HistoryBodyData){
         val textViewTitle: TextView = itemView.findViewById<TextView>(R.id.textViewTitle)
         val textViewBody: TextView = itemView.findViewById<TextView>(R.id.textViewBody)
         val textViewSum: TextView = itemView.findViewById<TextView>(R.id.textViewSum)
@@ -54,13 +53,13 @@ class DetailFragment : Fragment() {
         textViewSum.text=data.endText
         imageViewService.setImageResource(data.icon)
         when(data.status){
-            HistoryStatuses.IN_PROGRESS->{
+            HistoryStatuses.IN_PROGRESS ->{
                 imageViewStatus.setImageResource(R.drawable.ic_status_proccess)
             }
-            HistoryStatuses.SUCCES->{
+            HistoryStatuses.SUCCES ->{
                 imageViewStatus.setImageResource(R.drawable.ic_status_done)
             }
-            HistoryStatuses.REJECT->{
+            HistoryStatuses.REJECT ->{
                 imageViewStatus.setImageResource(R.drawable.ic_status_rejected)
             }
             else->{}

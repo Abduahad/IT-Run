@@ -1,4 +1,4 @@
-package com.example.recyclerview
+package com.example.recyclerview.ui
 
 
 import android.view.LayoutInflater
@@ -9,6 +9,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.recyclerview.R
+import com.example.recyclerview.core.BaseViewHolder
+import com.example.recyclerview.model.HistoryBodyData
+import com.example.recyclerview.model.HistoryStatuses
 
 
 class MyAdapter(private val mData: List<Any>, private val onClickListener: OnClickListener, val onLongClickListener:View.OnLongClickListener) : RecyclerView.Adapter<ViewHolder>() {
