@@ -1,16 +1,21 @@
-package com.example.recyclerview
+package com.example.recyclerview.ui
 
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.recyclerview.R
+import com.example.recyclerview.core.BaseViewHolder
+import com.example.recyclerview.model.HistoryBodyData
+import com.example.recyclerview.model.HistoryStatuses
 
 
-class MyAdapter( private val mData: List<Any>) : RecyclerView.Adapter<ViewHolder>() {
+class MyAdapter(private val mData: List<Any>, private val onClickListener: OnClickListener, val onLongClickListener:View.OnLongClickListener) : RecyclerView.Adapter<ViewHolder>() {
     private val HEAD_VIEW_TYPE=0
     private val BODY_VIEW_TYPE=1
 
@@ -28,7 +33,10 @@ class MyAdapter( private val mData: List<Any>) : RecyclerView.Adapter<ViewHolder
             holder.bind(data as String)
         }else if (holder is BodyViewHolder){
             holder.bind(data as HistoryBodyData)
+            holder.itemView.setOnClickListener(onClickListener)
+            holder.itemView.setOnLongClickListener(onLongClickListener)
         }
+
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -50,6 +58,20 @@ class MyAdapter( private val mData: List<Any>) : RecyclerView.Adapter<ViewHolder
             textViewTitle.text=item.title
             textViewBody.text=item.body
             textViewSum.text=item.endText
+            imageViewService.setImageResource(item.icon)
+            when(item.status){
+              HistoryStatuses.IN_PROGRESS->{
+                  imageViewStatus.setImageResource(R.drawable.ic_status_proccess)
+              }
+              HistoryStatuses.SUCCES->{
+                  imageViewStatus.setImageResource(R.drawable.ic_status_done)
+              }
+              HistoryStatuses.REJECT->{
+                  imageViewStatus.setImageResource(R.drawable.ic_status_rejected)
+              }
+              else->{}
+            }
+            itemView.tag = item
         }
     }
 
@@ -58,6 +80,7 @@ class MyAdapter( private val mData: List<Any>) : RecyclerView.Adapter<ViewHolder
 
         override fun bind(item:String){
             textViewTitle.text=item
+
         }
 
     }
