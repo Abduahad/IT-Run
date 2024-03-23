@@ -1,11 +1,16 @@
 package com.example.recyclerview.repository
 
+import android.util.Log
 import com.example.recyclerview.R
 import com.example.recyclerview.model.HistoryBodyData
 import com.example.recyclerview.model.HistoryStatuses
+import com.example.recyclerview.ui.TAG
+import kotlinx.coroutines.delay
 
 class HistoryRepository {
-    fun getHistory():List<Any>{
+    suspend fun getHistory():List<Any>{
+        delay(2000)
+        Log.d(TAG, "getHistory")
         val list:ArrayList<Any> = ArrayList()
         list.add("29.02.2024")
         list.add(
