@@ -1,6 +1,5 @@
 package com.example.recyclerview.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
@@ -19,6 +20,7 @@ import com.example.recyclerview.R
 
 val TAG:String ="TestLiveData"
 class MainFragment : Fragment(), View.OnClickListener,View.OnLongClickListener {
+    private lateinit var recyclerView:RecyclerView
 
     private lateinit var viewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,21 +37,32 @@ class MainFragment : Fragment(), View.OnClickListener,View.OnLongClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recyclerView:RecyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+
+        recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
         view.findViewById<Button>(R.id.button).setOnClickListener(this)
+
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        viewModel.getHistory().observe(viewLifecycleOwner, {
-            Log.d(TAG, "getHistory_observed: $it")
-            val adapter: MyAdapter = MyAdapter(it,this@MainFragment,this@MainFragment)
-            recyclerView.adapter = adapter
+        viewModel.loading.observe(viewLifecycleOwner) {
+            if (it) {
+                view.findViewById<ProgressBar>(R.id.progressBar).visibility = View.VISIBLE
+                view.findViewById<RelativeLayout>(R.id.relativeLayout).visibility = View.GONE
+            } else {
+                view.findViewById<ProgressBar>(R.id.progressBar).visibility = View.GONE
+                view.findViewById<RelativeLayout>(R.id.relativeLayout).visibility = View.VISIBLE
+            }
+        }
 
-        })
-
-        viewModel.fetchHistory()
+        viewModel.fetchAllHistory().observe(viewLifecycleOwner) {
+           initList(it)
+        }
     }
 
-
+    private fun initList(list:List<Any>){
+        Log.d(TAG, "5.initList: $list")
+        val adapter: MyAdapter = MyAdapter(list,this@MainFragment,this@MainFragment)
+        recyclerView.adapter = adapter
+    }
 
     override fun onClick(v: View?) {
         v?.let {
