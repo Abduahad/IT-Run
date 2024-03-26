@@ -28,6 +28,31 @@ class HistoryRepository {
                 R.drawable.ic_tcell,
                 HistoryStatuses.IN_PROGRESS,"Tcell","92 111 11 11","50 TJS")
         )
+        list.add(
+            HistoryBodyData(
+                R.drawable.ic_tcell,
+                HistoryStatuses.IN_PROGRESS,"Tcell","92 111 11 11","50 TJS")
+        )
+        list.add(
+            HistoryBodyData(
+                R.drawable.ic_tcell,
+                HistoryStatuses.IN_PROGRESS,"Tcell","92 111 11 11","50 TJS")
+        )
+        list.add(
+            HistoryBodyData(
+                R.drawable.ic_tcell,
+                HistoryStatuses.IN_PROGRESS,"Tcell","92 111 11 11","50 TJS")
+        )
+        list.add(
+            HistoryBodyData(
+                R.drawable.ic_tcell,
+                HistoryStatuses.IN_PROGRESS,"Tcell","92 111 11 11","50 TJS")
+        )
+        list.add(
+            HistoryBodyData(
+                R.drawable.ic_tcell,
+                HistoryStatuses.IN_PROGRESS,"Tcell","92 111 11 11","50 TJS")
+        )
         return list
     }
 }
